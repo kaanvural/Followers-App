@@ -6,12 +6,13 @@
 //  Copyright © 2020 Kaan. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {      //singleton
     
     static let shared   = NetworkManager()
-    let baseURL         = "https://api.github.com/users/"
+    private let baseURL         = "https://api.github.com/users/"
+    let cache           = NSCache<NSString, UIImage>()
     
     private init() {        //private cause of singleton
         

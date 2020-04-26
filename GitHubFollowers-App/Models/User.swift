@@ -8,18 +8,18 @@
 
 import Foundation
 
-struct User: Codable {
+struct User: Codable, Hashable {
     
-    var login: String
-    var avatarUrl: String
+    let login: String
+    let avatarUrl: String
     var name: String?       //may return null
     var location: String?
     var bio: String?
-    var publicRepos: Int
-    var publicGists: Int
-    var htmlUrl: String
-    var followers: Int
-    var followings: Int
-    var createdAt: String
+    let publicRepos: Int
+    let publicGists: Int
+    let htmlUrl: String
+    let followers: Int
+    let following: Int
+    let createdAt: String
     
 }

@@ -17,4 +17,5 @@ struct Follower: Codable, Hashable {      //properties need to be match perfectl
 //    func hash(into hasher: inout Hasher) {
 //        hasher.combine(login)
 //    }
+    
 }

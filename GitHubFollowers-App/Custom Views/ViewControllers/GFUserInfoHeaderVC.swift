@@ -41,7 +41,7 @@ class GFUserInfoHeaderVC: UIViewController {
     func configureAvatarImageView() {
         view.addSubview(avatarImageView)
         
-        avatarImageView.downloadImage(from: user.avatarUrl)
+        downloadAvatarImage()
         
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
@@ -49,6 +49,13 @@ class GFUserInfoHeaderVC: UIViewController {
             avatarImageView.widthAnchor.constraint(equalToConstant: 90),
             avatarImageView.heightAnchor.constraint(equalToConstant: 90)
         ])
+    }
+    
+    func downloadAvatarImage() {
+        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
+            guard let self = self else { return }
+            DispatchQueue.main.async { self.avatarImageView.image = image }
+        }
     }
     
     func configureUsernameLabel() {
@@ -80,7 +87,7 @@ class GFUserInfoHeaderVC: UIViewController {
     func configureLocationImageView() {
         view.addSubview(locationImageView)
         
-        locationImageView.image     = UIImage(systemName: SFSymbols.location)
+        locationImageView.image     = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
         
         locationImageView.translatesAutoresizingMaskIntoConstraints = false

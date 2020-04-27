@@ -35,5 +35,4 @@ class GFTitleLabel: UILabel {
         
         lineBreakMode               = .byTruncatingTail // if text too long will add to the tail ...
     }
-    
 }

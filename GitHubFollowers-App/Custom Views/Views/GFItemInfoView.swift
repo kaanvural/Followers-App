@@ -52,7 +52,6 @@ class GFItemInfoView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: symbolImageView.trailingAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 18)
-            
         ])
     }
     
@@ -68,7 +67,6 @@ class GFItemInfoView: UIView {
     }
     
     func set(itemInfoType: ItemInfoType, with count: Int) {
-
         countLabel.text         = String(count)
         
         switch itemInfoType {

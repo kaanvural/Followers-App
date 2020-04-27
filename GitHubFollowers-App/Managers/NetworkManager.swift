@@ -16,7 +16,7 @@ class NetworkManager {      //singleton
     
     private init() {}       //private cause of singleton
     
-    func getFollowers(for username: String, page: Int, completed: @escaping(Result<[Follower], GFError>) -> Void) {
+    func getFollowers(for username: String, page: Int, completed: @escaping (Result<[Follower], GFError>) -> Void) {
         //advantage of using result<> type is always returns one in success or error
         
         let endpoint = baseURL + username + "/followers?per_page=100&page=\(page)"
@@ -44,9 +44,9 @@ class NetworkManager {      //singleton
             }
             
             do {
-                let decoder                 = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let followers               = try decoder.decode([Follower].self, from: data)
+                let decoder                     = JSONDecoder()
+                decoder.keyDecodingStrategy     = .convertFromSnakeCase
+                let followers                   = try decoder.decode([Follower].self, from: data)
                 completed(.success(followers))
             } catch {
                 completed(.failure(.invalidData))
@@ -56,7 +56,7 @@ class NetworkManager {      //singleton
         task.resume()
     }
     
-    func getUserInfo(for username: String, completed: @escaping(Result<User, GFError>) -> Void) {
+    func getUserInfo(for username: String, completed: @escaping (Result<User, GFError>) -> Void) {
         //advantage of using result<> type is always returns one in success or error
         
         let endpoint = baseURL + "\(username)"

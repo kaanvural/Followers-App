@@ -12,14 +12,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         //let searchNC = UINavigationController(rootViewController: SearchVC())
         //let favoritesNC = UINavigationController(rootViewController: FavoritesListVC())
         //let tabBar = UITabBarController()
         //tabBar.viewControllers = [searchNC, favoritesNC]
-        
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds) //to fill up full screen
@@ -32,7 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func configureNavigationBar() {
         UINavigationBar.appearance().tintColor = .systemGreen
-        
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -62,7 +59,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-    
-    
 }
 

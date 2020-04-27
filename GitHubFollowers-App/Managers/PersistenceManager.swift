@@ -15,24 +15,23 @@ enum PersistenceManager {
     enum Keys { static let favorites = "favorites" }
     static private let defaults = UserDefaults.standard
     
-    static func updateWith(favorite: Follower, actionType: PersistenceActionType, completed: @escaping(GFError?) -> Void) {
+    static func updateWith(favorite: Follower, actionType: PersistenceActionType, completed: @escaping (GFError?) -> Void) {
         retreiveFavorites { result in
             switch result{
-            case .success(let favorites):
-                var retreivedFavorites = favorites
+            case .success(var favorites):
                 
                 switch actionType {
                 case .add:
-                    guard !retreivedFavorites.contains(favorite) else {
+                    guard !favorites.contains(favorite) else {
                         completed(.alreadyInFavorites)
                         return
                     }
-                    retreivedFavorites.append(favorite)
+                    favorites.append(favorite)
                 case .remove:
-                    retreivedFavorites.removeAll { $0.login == favorite.login }
+                    favorites.removeAll { $0.login == favorite.login }
                 }
                 
-                completed(save(favorites: retreivedFavorites))
+                completed(save(favorites: favorites))
                 
             case .failure(let error):
                completed(error)
@@ -40,7 +39,7 @@ enum PersistenceManager {
         }
     }
     
-    static func retreiveFavorites(completed: @escaping(Result<[Follower], GFError>) -> Void) {
+    static func retreiveFavorites(completed: @escaping (Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completed(.success([]))
             return
@@ -56,7 +55,6 @@ enum PersistenceManager {
     }
     
     static func save(favorites: [Follower]) -> GFError? {
-        
         do {
             let encoder = JSONEncoder()
             let encodedFavorites = try encoder.encode(favorites)

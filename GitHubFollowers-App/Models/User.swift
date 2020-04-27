@@ -21,5 +21,4 @@ struct User: Codable, Hashable {
     let followers: Int
     let following: Int
     let createdAt: Date
-    
 }

@@ -9,12 +9,14 @@
 import UIKit
 
 protocol UserInfoVCDelegate: class {
-    func didTapGitHubProfile(for user: User)
-    func didTapGetFollowers(for user: User)
+    func didRequestFollowers(for username: String)
 }
 
 class UserInfoVC: UIViewController {
 
+    let scrollView          = UIScrollView()        //Iphone SE implementation
+    let contentView         = UIView()
+    
     let headerView          = UIView()
     let itemViewOne         = UIView()
     let itemViewTwo         = UIView()
@@ -22,11 +24,12 @@ class UserInfoVC: UIViewController {
     var itemViews: [UIView] = []
     
     var username: String!
-    weak var delegate: FollowerListVCDelegate!
+    weak var delegate: UserInfoVCDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
+        configureScrollView()
         layoutUI()
         getUserInfo()
     }
@@ -35,6 +38,19 @@ class UserInfoVC: UIViewController {
         view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
+    }
+    
+    func configureScrollView() {
+        view.addSubview(scrollView)
+        scrollView.pinToEdges(of: view)
+        
+        scrollView.addSubview(contentView)
+        contentView.pinToEdges(of: scrollView)
+        
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 600)
+        ])
     }
     
     func getUserInfo() {
@@ -64,21 +80,20 @@ class UserInfoVC: UIViewController {
     }
     
     func layoutUI() {
-        
         itemViews = [ headerView, itemViewOne, itemViewTwo, dateLabel ]
         
         for itemView in itemViews {
-            view.addSubview(itemView)
+            contentView.addSubview(itemView)   //previously view
             itemView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+                itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
             ])
         }
         
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 20),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
             itemViewOne.heightAnchor.constraint(equalToConstant: 140),
@@ -87,7 +102,7 @@ class UserInfoVC: UIViewController {
             itemViewTwo.heightAnchor.constraint(equalToConstant: 140),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: 20),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
@@ -103,7 +118,7 @@ class UserInfoVC: UIViewController {
     }
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+extension UserInfoVC: GFRepoItemVCDelegate {
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
             presentGFAlertOnMainThread(title: "Invalid URL", message: "Url attached to this user is invalid.", buttonTitle: "OK")
@@ -111,7 +126,9 @@ extension UserInfoVC: UserInfoVCDelegate {
         }
         presentSafariVC(with: url)
     }
-    
+}
+
+extension UserInfoVC: GFFollowerItemVCDelegate {
     func didTapGetFollowers(for user: User) {
         guard user.followers != 0 else {
             presentGFAlertOnMainThread(title: "No Followers", message: "This user has no followers", buttonTitle: "OK")

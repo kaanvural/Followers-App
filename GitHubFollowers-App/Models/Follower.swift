@@ -13,9 +13,7 @@ struct Follower: Codable, Hashable {      //properties need to be match perfectl
     var login: String                    //not optional because we know these are gonna return
     var avatarUrl: String               //camelCase will be formatted to snake case with using JSONDecoder().keyDecodingStrategy
     
-    
 //    func hash(into hasher: inout Hasher) {
 //        hasher.combine(login)
 //    }
-    
 }

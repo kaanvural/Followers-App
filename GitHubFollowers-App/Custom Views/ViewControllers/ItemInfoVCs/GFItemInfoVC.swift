@@ -8,15 +8,19 @@
 
 import UIKit
 
+protocol ItemInfoVCDelegate: class {
+    func didTapGitHubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
+}
+
 class GFItemInfoVC: UIViewController {
     
-    let stackView = UIStackView()
+    let stackView       = UIStackView()
     let itemInfoViewOne = GFItemInfoView()
     let itemInfoViewTwo = GFItemInfoView()
     let actionButton    = GFButton()    //generic class we do not initialize with background
 
     var user: User!
-    weak var delegate: UserInfoVCDelegate!
     
     init(user: User){
         super.init(nibName: nil, bundle: nil)
@@ -47,7 +51,6 @@ class GFItemInfoVC: UIViewController {
     }
     
     func configureStackView() {
-        
         stackView.distribution  = .equalSpacing
         stackView.axis          = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,9 +59,9 @@ class GFItemInfoVC: UIViewController {
         stackView.addArrangedSubview(itemInfoViewTwo)
         
     }
+    
     private func layoutUI() {
-        view.addSubview(stackView)
-        view.addSubview(actionButton)
+        view.addSubviews(stackView, actionButton)
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),

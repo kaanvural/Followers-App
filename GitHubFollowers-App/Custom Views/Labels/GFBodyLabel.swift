@@ -27,13 +27,13 @@ class GFBodyLabel: UILabel {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        font                        = UIFont.preferredFont(forTextStyle: .body)
-        textColor                   = .secondaryLabel      //modifies according to light/dark mode
-        
-        adjustsFontSizeToFitWidth   = true
-        minimumScaleFactor          = 0.75
-        
-        lineBreakMode               = .byWordWrapping
+        adjustsFontForContentSizeCategory   = true                  //dynamic text 
+        font                                = UIFont.preferredFont(forTextStyle: .body)
+        textColor                           = .secondaryLabel      //modifies according to light/dark mode
+                
+        adjustsFontSizeToFitWidth           = true
+        minimumScaleFactor                  = 0.75
+                
+        lineBreakMode                       = .byWordWrapping
     }
-
 }
